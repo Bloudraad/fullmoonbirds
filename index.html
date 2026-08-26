@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FULLMOONBIRDS Directory</title>
+    <style>
+        body {
+            background-color: #0b0e14;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding: 40px 20px;
+            margin: 0;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        p {
+            color: #8a99ad;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 10px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #58a6ff;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            image-rendering: pixelated;
+        }
+        .card-id {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #58a6ff;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>FULLMOONBIRDS</h1>
+    <p>Official Animated CC0 Directory on Fractal Bitcoin</p>
+
+    <div class="grid" id="gallery"></div>
+
+    <script>
+        const gallery = document.getElementById('gallery');
+        const TOTAL_BIRDS = 10000;
+
+        for (let i = 0; i < TOTAL_BIRDS; i++) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            const img = document.createElement('img');
+            img.src = `${i}.gif`; 
+            img.alt = `FullMoonBird #${i}`;
+            img.loading = 'lazy'; 
+            
+            const idText = document.createElement('div');
+            idText.className = 'card-id';
+            idText.innerText = `#${i}`;
+            
+            card.appendChild(img);
+            card.appendChild(idText);
+            gallery.appendChild(card);
+        }
+    </script>
+
+</body>
+</html>
