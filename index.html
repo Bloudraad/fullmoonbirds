@@ -360,6 +360,31 @@ function attrs(record) {
   return Array.isArray(record?.meta?.attributes) ? record.meta.attributes : [];
 }
 
+function buildTraitStats() {
+  traitTypes = [...new Set(
+    birds.flatMap(b => attrs(b)
+      .map(a => String(a?.trait_type ?? ''))
+      .filter(Boolean))
+  )].sort((a,b) => a.localeCompare(b));
+
+  traitStats = {};
+  traitTypes.forEach(t => traitStats[t] = {});
+
+  birds.forEach(b => {
+    const map = {};
+    attrs(b).forEach(a => {
+      if (a?.trait_type != null) {
+        map[String(a.trait_type)] = String(a?.value ?? 'None');
+      }
+    });
+
+    traitTypes.forEach(t => {
+      const value = map[t] ?? 'None';
+      traitStats[t][value] = (traitStats[t][value] || 0) + 1;
+    });
+  });
+}
+
 function buildTraitTypes() {
   const types = new Set();
   birds.forEach(b => attrs(b).forEach(a => {
@@ -488,7 +513,7 @@ function openModal(record,num) {
   modalTraits.innerHTML = '';
 
   rarityRank.textContent = record?.rarity?.rank
-    ? `#${record.rarity.rank.toLocaleString()} / ${record.rarity.total_supply.toLocaleString()}`
+    ? `#${record.rarity.rank.toLocaleString()} / ${birds.length.toLocaleString()}`
     : '—';
   rarityScore.textContent = record?.rarity?.score
     ? Number(record.rarity.score).toFixed(2)
@@ -588,6 +613,7 @@ fetch('traits.json', {cache:'no-store'})
   .then(data=>{
     if(!Array.isArray(data)) throw new Error('traits.json is not an array');
     birds=data;
+    buildTraitStats();
     buildTraitTypes();
     filtered=[...birds];
     applyFilters(false);
